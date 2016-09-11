@@ -1,0 +1,41 @@
+<!doctype html>
+<head>
+<title>Hello</title>
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+<body>
+<div>
+	<button onclick="randomquestion()">Random Question</button>
+</div>
+<div id="randomQuestionMessage"></div>
+<div>
+  Select random question and answer it.
+   answer: <input id="answertest" type="text" />
+  <button onclick="testQuestionAnswer()">Test</button>
+</div>
+<div id="testAnswerMessage">
+</div>
+<script>
+function randomquestion() {
+	$.get("/rest/randomquestion", {}, function(randomquestions) {
+		$("#randomQuestionMessage").text(randomquestions);
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		$("#randomQuestionMessage").text(textStatus + ": " + errorThrown);
+	});
+};
+</script>
+<script>
+function testQuestionAnswer() {
+	var questiontest = $("#randomQuestionMessage").text();
+	var answertest = $("#answertest").val();
+	$.get("/rest/testanswer", {A:answertest, Q:questiontest}, function(testanswer) {
+		$("#testAnswerMessage").text(testanswer);
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		$("#testAnswerMessage").text(textStatus + ": " + errorThrown);
+	});
+};
+</script>
+</body>
+</html>
